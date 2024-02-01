@@ -118,7 +118,6 @@ app.post("/login", (request, response) => {
           response.status(200).send({
             status: "ok",
             message: "Login Successful",
-            email: user.email,
             accessToken,
             user: {
               id: 1,
