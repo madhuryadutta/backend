@@ -97,7 +97,7 @@ app.post("/login", (request, response) => {
         .then((passwordCheck) => {
 
           // check if password matches
-          if(!passwordCheck) {
+          if (!passwordCheck) {
             return response.status(400).send({
               message: "Passwords does not match",
               error,
@@ -105,7 +105,7 @@ app.post("/login", (request, response) => {
           }
 
           //   create JWT token
-          const token = jwt.sign(
+          const accessToken = jwt.sign(
             {
               userId: user._id,
               userEmail: user.email,
@@ -116,9 +116,17 @@ app.post("/login", (request, response) => {
 
           //   return success response
           response.status(200).send({
+            status: "ok",
             message: "Login Successful",
-            email: user.email,
-            token,
+            accessToken,
+            user: {
+              id: 1,
+              fname: "TEST",
+              lname: "USER",
+              username: user.email,
+              email: user.email,
+              avatar: "https://meme-api.databytedigital.com/static/doge.png"
+            }
           });
         })
         // catch error if password does not match
@@ -144,7 +152,7 @@ app.get("/free-endpoint", (request, response) => {
 });
 
 // authentication endpoint
-app.get("/auth-endpoint",auth, (request, response) => {
+app.get("/auth-endpoint", auth, (request, response) => {
   response.json({ message: "You are authorized to access me" });
 });
 
