@@ -125,7 +125,7 @@ app.post("/login", (request, response) => {
               lname: "USER",
               username: user.email,
               email: user.email,
-              avatar: "https://www.shutterstock.com/image-vector/man-icon-vector-1040084344"
+              avatar: "https://meme-api.databytedigital.com/static/doge.png"
             }
           });
         })
