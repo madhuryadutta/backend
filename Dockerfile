@@ -1,39 +1,20 @@
-# syntax = docker/dockerfile:1
+# Fetching the minified node image on apline linux
+FROM node:slim
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=16.18.1
-FROM node:${NODE_VERSION}-slim as base
+# Declaring env
+ENV NODE_ENV development
 
-LABEL fly_launch_runtime="Node.js"
+# Setting up the work directory
+WORKDIR /backend
 
-# Node.js app lives here
-WORKDIR /app
+# Copying all the files in our project
+COPY . .
 
-# Set production environment
-ENV NODE_ENV="production"
+# Installing dependencies
+RUN npm install
 
-
-# Throw-away build stage to reduce size of final image
-FROM base as build
-
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python
-
-# Install node modules
-COPY --link package-lock.json package.json ./
-RUN npm ci
-
-# Copy application code
-COPY --link . .
-
-
-# Final stage for app image
-FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
+# Starting our application
 CMD [ "node", "index.js" ]
+
+# Exposing server port
+EXPOSE 3000
