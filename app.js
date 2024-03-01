@@ -45,8 +45,6 @@ app.get("/", (request, response, next) => {
 
 // register endpoint
 app.post("/register", (request, response) => {
-
-  console.log('Register HIT');
   // hash the password
   bcrypt
     .hash(request.body.password, 10)
@@ -82,13 +80,14 @@ app.post("/register", (request, response) => {
         e,
       });
     });
+  console.log('Register HIT');
+
 });
 
 
 // login endpoint
 app.post("/login", (request, response) => {
 
-  console.log('Login HIT');
   // check if email exists
   User.findOne({ email: request.body.email })
 
@@ -149,6 +148,8 @@ app.post("/login", (request, response) => {
         e,
       });
     });
+  console.log('Login HIT');
+
 });
 
 // free endpoint
