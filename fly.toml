@@ -17,6 +17,4 @@ primary_region = 'sin'
   processes = ['app']
 
 [[vm]]
-  cpu_kind = 'shared'
-  cpus = 1
-  memory_mb = 256
+  size = 'shared-cpu-1x'
