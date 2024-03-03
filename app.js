@@ -1,10 +1,8 @@
-
-
 const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
 
-// require database connection 
+// require database connection
 const dbConnect = require("./db/dbConnect");
 
 const User = require("./db/userModel");
@@ -13,9 +11,9 @@ const auth = require("./auth");
 
 const express = require("express");
 const app = express();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
-// execute database connection 
+// execute database connection
 dbConnect();
 
 // Curb Cores Error by adding a header here
@@ -23,15 +21,14 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization",
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS",
   );
   next();
 });
-
 
 // body parser configuration
 app.use(bodyParser.json());
@@ -39,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (request, response, next) => {
   response.json({ message: "Hey! This is your server response!" });
-  console.log('HTTP HIT');
+  console.log("HTTP HIT");
   next();
 });
 
@@ -80,14 +77,11 @@ app.post("/register", (request, response) => {
         e,
       });
     });
-  console.log('Register HIT');
-
+  console.log("Register HIT");
 });
-
 
 // login endpoint
 app.post("/login", (request, response) => {
-
   // check if email exists
   User.findOne({ email: request.body.email })
 
@@ -99,7 +93,6 @@ app.post("/login", (request, response) => {
 
         // if the passwords match
         .then((passwordCheck) => {
-
           // check if password matches
           if (!passwordCheck) {
             return response.status(400).send({
@@ -115,7 +108,7 @@ app.post("/login", (request, response) => {
               userEmail: user.email,
             },
             "RANDOM-TOKEN",
-            { expiresIn: "24h" }
+            { expiresIn: "24h" },
           );
 
           //   return success response
@@ -129,8 +122,8 @@ app.post("/login", (request, response) => {
               lname: "USER",
               username: user.email,
               email: user.email,
-              avatar: "https://meme-api.databytedigital.com/static/doge.png"
-            }
+              avatar: "https://meme-api.databytedigital.com/static/doge.png",
+            },
           });
         })
         // catch error if password does not match
@@ -148,8 +141,7 @@ app.post("/login", (request, response) => {
         e,
       });
     });
-  console.log('Login HIT');
-
+  console.log("Login HIT");
 });
 
 // free endpoint
@@ -161,6 +153,5 @@ app.get("/free-endpoint", (request, response) => {
 app.get("/auth-endpoint", auth, (request, response) => {
   response.json({ message: "You are authorized to access me" });
 });
-
 
 module.exports = app;
